@@ -209,8 +209,8 @@ plot_evol <- ggplot(data_anios, aes(x=anio, y=cursantes, group=1)) +
   annotate("rect", xmin=4,xmax=6, ymin=-Inf, ymax=Inf, alpha=.2, fill="lightgreen") +
   geom_line(linetype="dashed") +
   geom_point(aes(size=cursantes)) +
-  geom_label(aes(label=cursantes), vjust=-1) +
-  scale_x_discrete(drop=FALSE, labels=c("2016","","","2019","2020","2021")) +
+  geom_label(aes(label=cursantes, hjust=ifelse(cursantes<7000, -.5, 1.5))) +
+  scale_x_discrete(drop=FALSE, labels=c("2016","","","2019","2020","2021"), expand = c(0.01,0.01)) +
   coord_cartesian(clip="off") +
   scale_size(range = c(4,12)) +
   guides(size="none") +
