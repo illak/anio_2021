@@ -230,3 +230,47 @@ plot_evol
 
 ggsave("plot_evol.png", plot_evol, width = 10, height = 10, dpi=320)
 
+
+# Egresados
+data_egresados <- read_csv("data/data_matricula_egresos.csv")
+
+
+data_egresados <- data_egresados %>% 
+  select(linea_formativa, propuesta, carrera_siglas, tipo, ifda_siglas, egresados_intermedio, egresados, anio) %>% 
+  mutate(tipo = case_when(
+    tipo=="Trayecto"~"Postítulo",
+    tipo=="Profesorado"~"Profesorado",
+    tipo=="Seminario"~"Curso",
+    TRUE ~ "Formación\nacadémica"
+  ))
+
+
+data_egresados_tipo <- data_egresados %>% 
+  mutate(
+    anio_actual = as.factor(anio==2021),
+    anio_actual = factor(anio_actual, levels=c("TRUE", "FALSE")),
+    egresados_totales = egresados + egresados_intermedio
+  ) %>% 
+  group_by(tipo, anio_actual) %>% 
+  summarise(egresados_tipo = sum(egresados_totales))
+  
+  
+plot_egresados_1 <- ggplot(data_egresados_tipo, aes(x=tipo, y=egresados_tipo, fill=anio_actual)) +
+  geom_col() +
+  coord_flip() +
+  scale_fill_manual(values=c("#594A4E","#DFB9C4")) +
+  theme_minimal(base_size = 16) +
+  labs(
+    x=NULL,
+    y=NULL
+  ) +
+  guides(
+    fill="none"
+  ) +
+  theme(
+    panel.grid = element_blank()
+  )
+
+plot_egresados_1
+
+ggsave("plot_egresados.png", width = 10, height = 10, dpi=320)
