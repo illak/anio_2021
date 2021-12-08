@@ -42,19 +42,24 @@ data_lf_tipo <- data_prop %>%
 color_lf <- "#5A45A3"
 color_tipo <- "#5A45A3"
 
+color_1 <- "#594A4E"
+color_2 <- "#DFB9C4"
+
 plot_resumen_lf <- ggplot(data_lf, aes(x = fct_reorder(linea_formativa,cursantes), y = cursantes)) +
-  geom_point(aes(size=propuestas), color="red") +
-  geom_text(aes(label=cursantes), vjust= -1.8, color="blue", fontface="bold", size=4) +
-  geom_text(aes(label=propuestas), color="white", fontface="bold") +
+  geom_point(aes(size=propuestas), color=color_2) +
+  geom_text(aes(label=cursantes), vjust= -1.8, color=color_1, fontface="bold", size=6) +
+  geom_text(aes(label=propuestas, size=4*(propuestas*.03)), color="white", fontface="bold") +
   coord_flip(clip="off") +
-  scale_size(range = c(6,13)) +
-  labs(y=NULL, x = NULL,
-       title = "Cursantes ISEP 2021",
-       subtitle = "Cantidad de <span style='color:red;'>propuestas</span> y cantidad de 
-       <span style='color:blue;'>cursantes activos</span> del año por línea formativa y tipo de propuesta") +
+  scale_size(range = c(6,15)) +
+  labs(y="<-- Cantidad de cursantes -->", x = NULL,
+       #title = "Cursantes ISEP 2021",
+       #subtitle = "Cantidad de <span style='color:red;'>propuestas</span> y cantidad de 
+       #<span style='color:blue;'>cursantes activos</span> del año por línea formativa y tipo de propuesta"
+       ) +
   guides(size = "none") +
-  theme_minimal(base_size = 16) +
+  theme_minimal(base_size = 18) +
   theme(
+    axis.title.x = element_text(color=color_1),
     axis.text.x = element_blank(),
     plot.title = element_markdown(),
     plot.subtitle = element_markdown(),
@@ -64,7 +69,7 @@ plot_resumen_lf <- ggplot(data_lf, aes(x = fct_reorder(linea_formativa,cursantes
     panel.grid.minor.x = element_blank()
   )
 
-#plot_resumen_lf
+plot_resumen_lf
 
 flechas <- data.frame(x1=c(1.8,1.8), 
                       x2=c(1,1.2), 
@@ -79,9 +84,9 @@ texto <- data.frame(x1=c(1.8),
 
 # SIMILAR AL PLOT ANTERIOR PERO SE AGREGA LA DIM DE TIPO DE PROPUESTA
 plot_resumen_lf_tipo <- ggplot(data_lf_tipo, aes(x = fct_reorder(linea_formativa,cursantes_lf), y = tipo)) +
-  geom_point(aes(size=propuestas), color="red") +
-  geom_text(aes(label=cursantes), vjust= -1.4, color="blue", fontface="bold") +
-  geom_text(aes(label=propuestas), color="white", fontface="bold") +
+  geom_point(aes(size=propuestas), color=color_2) +
+  geom_text(aes(label=cursantes), vjust= -1.4, color=color_1, fontface="bold", size=6) +
+  geom_text(aes(label=propuestas, size=4*(propuestas*.03)), color="white", fontface="bold") +
 # geom_curve(
 #     aes(x=x1,y=y1,xend=x2,yend=y2),
 #     data=flechas,
@@ -94,16 +99,16 @@ plot_resumen_lf_tipo <- ggplot(data_lf_tipo, aes(x = fct_reorder(linea_formativa
 # ", hjust=0
 #    ) +
   coord_flip(clip="off") +
-  scale_size(range = c(6,10)) +
+  scale_size(range = c(6,13)) +
   scale_y_discrete(position="right") +
   guides(size = "none") +
-  theme_minimal(base_size = 16) +
+  theme_minimal(base_size = 18) +
   theme(
     
     axis.text.y = element_blank(),
     axis.title = element_blank(),
     axis.line.y = element_line(color="grey60"),
-    axis.text.x = element_text(face="bold", color = color_tipo),
+    axis.text.x = element_text(face="bold", color = color_tipo, angle = 45, hjust=0),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank()
   )
@@ -113,7 +118,8 @@ plot_resumen_lf_tipo
 
 plot_final_lf_tipo <- plot_resumen_lf + plot_resumen_lf_tipo
 
-ggsave("plot_final_lf_tipo.png", width = 17, height = 10, dpi=320)
+plot_final_lf_tipo
+ggsave("plot_final_lf_tipo.png", width = 19, height = 10, dpi=320)
 
 
 # PLOT por IFDA
@@ -140,18 +146,20 @@ color_lf <- "#5A45A3"
 color_tipo <- "#5A45A3"
 
 plot_resumen_ifda <- ggplot(data_ifda, aes(x = fct_reorder(ifda_sigla,cursantes), y = cursantes)) +
-  geom_point(aes(size=propuestas), color="red") +
-  geom_text(aes(label=cursantes), vjust= -1.8, color="blue", fontface="bold", size=4) +
-  geom_text(aes(label=propuestas), color="white", fontface="bold") +
+  geom_point(aes(size=propuestas), color=color_2) +
+  geom_text(aes(label=cursantes), vjust= -1.8, color=color_1, fontface="bold", size=7) +
+  geom_text(aes(label=propuestas, size=4*(propuestas*.03)), color="white", fontface="bold") +
   coord_flip(clip="off") +
-  scale_size(range = c(6,13)) +
-  labs(y=NULL, x = NULL,
-       title = "Cursantes ISEP 2021",
-       subtitle = "Cantidad de <span style='color:red;'>propuestas</span> y cantidad de 
-       <span style='color:blue;'>cursantes activos</span> del año por IFDA y tipo de propuesta") +
+  scale_size(range = c(6,15)) +
+  labs(y="<-- Cantidad de cursantes -->", x = NULL,
+       #title = "Cursantes ISEP 2021",
+       #subtitle = "Cantidad de <span style='color:red;'>propuestas</span> y cantidad de 
+       #<span style='color:blue;'>cursantes activos</span> del año por IFDA y tipo de propuesta"
+       ) +
   guides(size = "none") +
-  theme_minimal(base_size = 16) +
+  theme_minimal(base_size = 18) +
   theme(
+    axis.title.x = element_text(color=color_1),
     axis.text.x = element_blank(),
     plot.title = element_markdown(),
     plot.subtitle = element_markdown(),
@@ -163,26 +171,29 @@ plot_resumen_ifda <- ggplot(data_ifda, aes(x = fct_reorder(ifda_sigla,cursantes)
 
 # PLOT IFDA TIPO
 plot_resumen_ifda_tipo <- ggplot(data_ifda_tipo, aes(x = fct_reorder(ifda_sigla,cursantes_ifda), y = tipo)) +
-  geom_point(aes(size=propuestas), color="red") +
-  geom_text(aes(label=cursantes), vjust= -1.4, color="blue", fontface="bold") +
-  geom_text(aes(label=propuestas), color="white", fontface="bold") +
+  geom_point(aes(size=propuestas), color=color_2) +
+  geom_text(aes(label=cursantes), vjust= -1.4, color=color_1, fontface="bold", size=7) +
+  geom_text(aes(label=propuestas, size=4*(propuestas*.03)), color="white", fontface="bold") +
 coord_flip(clip="off") +
-  scale_size(range = c(6,10)) +
+  scale_size(range = c(6,13)) +
   scale_y_discrete(position="right") +
   guides(size = "none") +
-  theme_minimal(base_size = 16) +
+  theme_minimal(base_size = 18) +
   theme(
-    
+    plot.background = element_rect(fill="#F2F2F2", color=NA),
+    plot.margin = margin(rep(0,4)),
     axis.text.y = element_blank(),
     axis.title = element_blank(),
-    axis.line.y = element_line(color="grey60"),
-    axis.text.x = element_text(face="bold", color = color_tipo),
+    #axis.line.y = element_line(color="grey60"),
+    axis.text.x = element_text(face="bold", color = color_tipo, angle = 45, hjust=0),
     panel.grid.major.x = element_blank(),
-    panel.grid.minor.x = element_blank()
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(color="grey90")
   )
 
 plot_final_ifda_tipo <- plot_resumen_ifda + plot_resumen_ifda_tipo
-ggsave("plot_final_ifda_tipo.png", plot_final_ifda_tipo, width = 17, height = 10, dpi=320)
+plot_final_ifda_tipo
+ggsave("plot_final_ifda_tipo.png", plot_final_ifda_tipo, width = 20, height = 13, dpi=320)
 
 # Pruebas VIZ crecimiento 
 data_anios <- read_csv("data/data_anios.csv") %>% 
