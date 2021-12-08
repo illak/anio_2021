@@ -188,7 +188,7 @@ coord_flip(clip="off") +
     axis.text.x = element_text(face="bold", color = color_tipo, angle = 45, hjust=0),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
-    panel.grid.major.y = element_line(color="grey90")
+    panel.grid.major.y = element_line(color="grey80")
   )
 
 plot_final_ifda_tipo <- plot_resumen_ifda + plot_resumen_ifda_tipo
