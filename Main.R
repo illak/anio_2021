@@ -151,15 +151,17 @@ plot_resumen_ifda <- ggplot(data_ifda, aes(x = fct_reorder(ifda_sigla,cursantes)
   geom_text(aes(label=propuestas, size=4*(propuestas*.03)), color="white", fontface="bold") +
   coord_flip(clip="off") +
   scale_size(range = c(6,15)) +
-  labs(y="<-- Cantidad de cursantes -->", x = NULL,
+  expand_limits(x=c(1,14)) +
+  labs(y = NULL, x = NULL,
        #title = "Cursantes ISEP 2021",
        #subtitle = "Cantidad de <span style='color:red;'>propuestas</span> y cantidad de 
        #<span style='color:blue;'>cursantes activos</span> del año por IFDA y tipo de propuesta"
        ) +
   guides(size = "none") +
-  theme_minimal(base_size = 18) +
+  theme_minimal() +
   theme(
-    axis.title.x = element_text(color=color_1),
+    axis.text = element_text(size=20),
+    axis.title.x = element_text(color=color_1, size=15),
     axis.text.x = element_blank(),
     plot.title = element_markdown(),
     plot.subtitle = element_markdown(),
@@ -177,15 +179,17 @@ plot_resumen_ifda_tipo <- ggplot(data_ifda_tipo, aes(x = fct_reorder(ifda_sigla,
 coord_flip(clip="off") +
   scale_size(range = c(6,13)) +
   scale_y_discrete(position="right") +
+  expand_limits(x=c(1,14)) +
   guides(size = "none") +
-  theme_minimal(base_size = 18) +
+  theme_minimal() +
   theme(
-    plot.background = element_rect(fill="#F2F2F2", color=NA),
-    plot.margin = margin(rep(0,4)),
+    axis.text = element_text(size=20),
+    panel.background = element_rect(fill="#F2F2F2", color=NA),
     axis.text.y = element_blank(),
     axis.title = element_blank(),
     #axis.line.y = element_line(color="grey60"),
-    axis.text.x = element_text(face="bold", color = color_tipo, angle = 45, hjust=0),
+    axis.text.x = element_text(face="bold", color = color_tipo),
+    axis.text.x.top = element_text(vjust=.5),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.major.y = element_line(color="grey80")
