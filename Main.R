@@ -282,22 +282,47 @@ plot_egresados_1 <- ggplot(data_egresados_tipo, aes(x=tipo, y=egresados_tipo, fi
   )
 
 plot_egresados_1
-
 ggsave("plot_egresados.png", width = 10, height = 10, dpi=320)
 
 
 
+data_egresados_tipo_2 <- data_egresados %>% 
+  group_by(anio) %>% 
+  summarise(egresados_sum = sum(egresados)) %>% 
+  ungroup() %>% 
+  mutate(
+    pct = egresados_sum / sum(egresados_sum),
+    anios_2 = as.factor(anio %in% c(2020,2021))
+  )
 
 
+plot_egresados_2 <- ggplot(data_egresados_tipo_2, aes(x=anio, y=egresados_sum, fill=anios_2)) +
+  geom_col() +
+  geom_text(aes(label=egresados_sum),  vjust=-.1, size=6) +
+  scale_fill_manual(values=c("#DFB9C4","#594A4E")) +
+  scale_x_continuous(breaks = 2016:2021) +
+  theme_minimal(base_size = 16) +
+  labs(
+    x=NULL,
+    y=NULL
+  ) +
+  guides(
+    fill="none"
+  ) +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.y = element_blank(),
+    axis.text.x = element_text(size=17)
+  )
+
+plot_egresados_2
+ggsave("plot_egresados_2.png", width = 10, height = 7, dpi = 320)
 
 
 data_cursantes <- data_prop %>% 
+  filter(!carrera_siglas %in% c("CLINICAESCRITURA","MOD_INDIVIDUALES")) %>%
   filter(cursantes_T3 > 0) %>% 
   filter(carrera_siglas %in% c(
-    "GESTIONINI_ACT",
-    "GESTIONPRI_ACT",
-    "GESTIONSEC_ACT",
-    "GESTIONSUP_ACT",
     "CONTINUIDADPEDAGOGICA",
     "SEMINARIOSECUNDARIOJYA",
     "INICIAL_ACT",
@@ -307,7 +332,28 @@ data_cursantes <- data_prop %>%
     "SEMINARIOREDDIGIYSOC",
     "SEMINARIOESI",
     "ATENEOLENGUA1",
-    "TALLERLAB"
+    "TALLERLAB",
+    "PRIMARIA_ACT"
     ) | cohorte_anio==2021) %>%
-  group_by(propuesta) %>% 
+  mutate(estado = case_when(
+    carrera_siglas %in% c(
+      "CONTINUIDADPEDAGOGICA",
+      "SEMINARIOSECUNDARIOJYA",
+      "INICIAL_ACT",
+      "ATENEONATURALES1",
+      "SEMINARIOINTROPC",
+      "SEMINARIODATIEXP",
+      "SEMINARIOREDDIGIYSOC",
+      "SEMINARIOESI",
+      "ATENEOLENGUA1",
+      "TALLERLAB",
+      "PRIMARIA_ACT"
+    ) ~ "NUEVA",
+    TRUE ~ "RENUEVA"
+  )) %>% 
+  group_by(propuesta,estado) %>% 
   summarise(T3 = sum(cursantes_T3))
+
+data_cursantes %>% View()
+
+write_csv(data_cursantes, "output.csv")
