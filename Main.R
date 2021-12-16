@@ -264,7 +264,7 @@ data_egresados_tipo <- data_egresados %>%
   summarise(egresados_tipo = sum(egresados))
   
   
-plot_egresados_1 <- ggplot(data_egresados_tipo, aes(x=tipo, y=egresados_tipo, fill=anio_actual)) +
+plot_egresados_1 <- ggplot(data_egresados_tipo, aes(x=fct_reorder(tipo,egresados_tipo), y=egresados_tipo, fill=anio_actual)) +
   geom_col() +
   coord_flip() +
   scale_fill_manual(values=c("#594A4E","#DFB9C4")) +
@@ -282,7 +282,7 @@ plot_egresados_1 <- ggplot(data_egresados_tipo, aes(x=tipo, y=egresados_tipo, fi
   )
 
 plot_egresados_1
-ggsave("plot_egresados.png", width = 10, height = 10, dpi=320)
+ggsave("plot_egresados_ordenado.png", width = 10, height = 10, dpi=320)
 
 
 
